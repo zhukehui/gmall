@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f5184e1a-193d-46e7-aa42-b25ec3d85014" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gmall-admin/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gmall-admin/pom.xml" afterDir="false" />
-    </list>
+    <list default="true" id="f5184e1a-193d-46e7-aa42-b25ec3d85014" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/gmall-core/target/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -32,17 +25,7 @@
     <fileColor scope="Project Files" color="c8edcc" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="32">
-              <caret line="2" column="6" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="6" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375" />
   </component>
   <component name="Git.Settings">
     <option name="ROOT_SYNC" value="DONT_SYNC" />
@@ -90,7 +73,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="824" />
+    <option name="x" value="742" />
+    <option name="y" value="1" />
     <option name="width" value="1101" />
     <option name="height" value="1021" />
   </component>
@@ -106,6 +90,11 @@
             <path>
               <item name="gmall" type="b2602c69:ProjectViewProjectNode" />
               <item name="gmall" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="gmall" type="b2602c69:ProjectViewProjectNode" />
+              <item name="gmall" type="462c0819:PsiDirectoryNode" />
+              <item name="gmall-admin" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -197,7 +186,7 @@
       <option name="presentableId" value="Default" />
       <updated>1572265950245</updated>
       <workItem from="1572265953188" duration="2339000" />
-      <workItem from="1572268361463" duration="1450000" />
+      <workItem from="1572268361463" duration="1739000" />
     </task>
     <task id="LOCAL-00001" summary="谷粒商城初始化">
       <created>1572267834971</created>
@@ -206,15 +195,28 @@
       <option name="project" value="LOCAL" />
       <updated>1572267834971</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="pom.xml">
+      <created>1572269914691</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1572269914691</updated>
+    </task>
+    <task id="LOCAL-00003" summary="谷粒商城后台管理模块创建完成">
+      <created>1572270066355</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1572270066355</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3789000" />
+    <option name="totallyTimeSpent" value="4078000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="824" y="0" width="1101" height="1021" extended-state="0" />
-    <editor active="true" />
+    <frame x="742" y="1" width="1101" height="1021" extended-state="0" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3252191" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -256,7 +258,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="谷粒商城初始化" />
-    <option name="LAST_COMMIT_MESSAGE" value="谷粒商城初始化" />
+    <MESSAGE value="pom.xml" />
+    <MESSAGE value="谷粒商城后台管理模块创建完成" />
+    <option name="LAST_COMMIT_MESSAGE" value="谷粒商城后台管理模块创建完成" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/gmall-admin/src/main/java/com/atguigu/common/utils/RedisUtils.java">
