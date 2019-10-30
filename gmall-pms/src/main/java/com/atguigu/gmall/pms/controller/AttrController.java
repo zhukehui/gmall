@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.atguigu.gmall.pms.entity.AttrEntity;
 import com.atguigu.gmall.pms.service.AttrService;
-
-
+import sun.security.provider.certpath.CertId;
 
 
 /**
@@ -45,6 +44,14 @@ public class AttrController {
         return Resp.ok(page);
     }
 
+    @ApiOperation("根据条件分页查询")
+    @GetMapping
+    public Resp<PageVo> queryByCidTypePage(QueryCondition queryCondition
+            ,@RequestParam(value = "cid",required = false)Long cid
+            ,@RequestParam(value = "type",required = false)Integer type){
+        PageVo pageVo = this.attrService.queryByCidTypePage(queryCondition,cid,type);
+        return Resp.ok(pageVo);
+    }
 
     /**
      * 信息
