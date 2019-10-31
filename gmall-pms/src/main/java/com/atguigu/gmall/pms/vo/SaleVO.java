@@ -11,6 +11,7 @@ import java.util.List;
  */
 @Data
 public class SaleVO {
+    public Long skuId;
 
     //购物积分相关的字段
     private BigDecimal growBounds;
@@ -55,5 +56,4 @@ public class SaleVO {
      */
     private Integer fullAddOther;
 
-    private Long skuId;
 }

@@ -86,17 +86,20 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
 
         //1.新增spu相关的3张表
         //1.1 新增spuInfo
+        spuInfoVO.setPublishStatus(1); // 默认是已上架
         spuInfoVO.setCreateTime(new Date());
-        spuInfoVO.setUodateTime(spuInfoVO.getCreateTime());
+        spuInfoVO.setUodateTime(spuInfoVO.getCreateTime());// 新增时，更新时间和创建时间一致
         this.save(spuInfoVO);
 
-        Long spuId = spuInfoVO.getId();
+        Long spuId = spuInfoVO.getId();// 获取新增后的spuId
 
-        //1.2 新增spuInfoDesc
+        //1.2 新增spuInfoDesc 保存spu的描述信息 spu_info_desc
         List<String> spuImages = spuInfoVO.getSpuImages();
+        // 把商品的图片描述，保存到spu详情中，图片地址以逗号进行分割
         String desc = StringUtils.join(spuImages, ",");
 
         SpuInfoDescEntity spuInfoDescEntity = new SpuInfoDescEntity();
+        // 注意：spu_info_desc表的主键是spu_id,需要在实体类中配置该主键不是自增主键
         spuInfoDescEntity.setSpuId(spuId);
         spuInfoDescEntity.setDecript(desc);
         this.descDao.insert(spuInfoDescEntity);
@@ -165,6 +168,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
             //3.新增营销相关的3张表：skuId
             SaleVO saleVO = new SaleVO();
             BeanUtils.copyProperties(skuInfoVO,saleVO);
+            saleVO.setSkuId(skuId);
             this.smsClient.saveSale(saleVO);
 
         });
