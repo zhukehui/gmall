@@ -1,4 +1,4 @@
-package com.atguigu.gmall.pms.VO;
+package com.atguigu.gmall.pms.vo;
 
 import com.atguigu.gmall.pms.entity.AttrAttrgroupRelationEntity;
 import com.atguigu.gmall.pms.entity.AttrEntity;
