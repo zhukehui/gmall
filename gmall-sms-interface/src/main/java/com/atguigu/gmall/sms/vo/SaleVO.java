@@ -1,4 +1,4 @@
-package com.atguigu.gmall.pms.vo;
+package com.atguigu.gmall.sms.vo;
 
 import lombok.Data;
 
@@ -11,9 +11,10 @@ import java.util.List;
  */
 @Data
 public class SaleVO {
+
     public Long skuId;
 
-    //购物积分相关的字段
+    // 购物积分相关字段
     private BigDecimal growBounds;
     /**
      * 购物积分
@@ -24,25 +25,18 @@ public class SaleVO {
      */
     private List<Integer> work;
 
-
-    //打折优惠
-    /**
-     * 满几件
-     */
+    // 打折优惠
     private Integer fullCount;
     /**
      * 打几折
      */
     private BigDecimal discount;
-
     /**
      * 是否叠加其他优惠[0-不可叠加，1-可叠加]
      */
     private Integer ladderAddOther;
 
-
-    //满减优惠
-
+    // 满减优惠
     /**
      * 满多少
      */
@@ -55,5 +49,6 @@ public class SaleVO {
      * 是否参与其他优惠
      */
     private Integer fullAddOther;
+
 
 }
