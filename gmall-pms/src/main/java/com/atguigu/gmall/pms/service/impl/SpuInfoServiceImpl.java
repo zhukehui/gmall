@@ -6,6 +6,7 @@ import com.atguigu.core.bean.QueryCondition;
 import com.atguigu.gmall.pms.dao.*;
 import com.atguigu.gmall.pms.entity.*;
 import com.atguigu.gmall.pms.feign.GmallSmsClient;
+import com.atguigu.gmall.pms.service.SpuInfoDescService;
 import com.atguigu.gmall.pms.service.SpuInfoService;
 import com.atguigu.gmall.pms.vo.ProductAttrValueVO;
 import com.atguigu.gmall.pms.vo.SkuInfoVO;
@@ -14,15 +15,18 @@ import com.atguigu.gmall.sms.vo.SaleVO;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 
 @Service("spuInfoService")
@@ -42,6 +46,9 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
     private SkuSaleAttrValueDao skuSaleAttrValueDao;
     @Autowired
     private GmallSmsClient smsClient;
+    @Autowired
+    private SpuInfoDescService spuInfoDescService;
+
 
     @Override
     public PageVo queryPage(QueryCondition params) {
@@ -74,6 +81,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         return new PageVo(this.page(page,wrapper));
     }
 
+
     /**
      * 九张表
      * 1.spu相关的：3张
@@ -81,40 +89,48 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
      * 3.营销相关：3张
      * @param spuInfoVO
      */
+
+    /**
+     * 在类中获取代理对象分三个步骤：
+     *
+     * 1. 导入aop的场景依赖：spring-boot-starter-aop
+     * 2. 开启AspectJ的自动代理，同时要暴露代理对象：@EnableAspectJAutoProxy(exposeProxy=true)
+     * 3. 获取代理对象：SpuInfoService proxy = (SpuInfoService) AopContext.currentProxy();
+     */
+//    @Transactional
+    @GlobalTransactional
     @Override
     public void bigSave(SpuInfoVO spuInfoVO) {
 
         //1.新增spu相关的3张表
         //1.1 新增spuInfo
-        spuInfoVO.setPublishStatus(1); // 默认是已上架
-        spuInfoVO.setCreateTime(new Date());
-        spuInfoVO.setUodateTime(spuInfoVO.getCreateTime());// 新增时，更新时间和创建时间一致
-        this.save(spuInfoVO);
-
-        Long spuId = spuInfoVO.getId();// 获取新增后的spuId
+        Long spuId = saveSpuInfo(spuInfoVO);
 
         //1.2 新增spuInfoDesc 保存spu的描述信息 spu_info_desc
-        List<String> spuImages = spuInfoVO.getSpuImages();
-        // 把商品的图片描述，保存到spu详情中，图片地址以逗号进行分割
-        String desc = StringUtils.join(spuImages, ",");
+//        this.saveSpuDesc(spuInfoVO, spuId);
+        this.spuInfoDescService.saveSpuDesc(spuInfoVO,spuId);
 
-        SpuInfoDescEntity spuInfoDescEntity = new SpuInfoDescEntity();
-        // 注意：spu_info_desc表的主键是spu_id,需要在实体类中配置该主键不是自增主键
-        spuInfoDescEntity.setSpuId(spuId);
-        spuInfoDescEntity.setDecript(desc);
-        this.descDao.insert(spuInfoDescEntity);
-
+       /* try {
+            TimeUnit.SECONDS.sleep(4);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
         //1.3 新增基本属性 productAttrValue
-        List<ProductAttrValueVO> baseAttrs = spuInfoVO.getBaseAttrs();
-
-        baseAttrs.forEach(baseAttr -> {
-            baseAttr.setSpuId(spuId);
-            baseAttr.setAttrSort(0);
-            baseAttr.setQuickShow(1);
-            this.productAttrValueDao.insert(baseAttr);
-        });
+        this.saveBaseAttrs(spuInfoVO, spuId);
 
         //2.新增sku相关的3张表：spuID
+        this.saveSku(spuInfoVO, spuId);
+
+//        int i = 1 / 0 ;
+
+    }
+
+    /**
+     * 保存sku相关信息及营销信息
+     * @param spuInfoVO
+     * @param spuId
+     */
+    private void saveSku(SpuInfoVO spuInfoVO, Long spuId) {
         List<SkuInfoVO> skus = spuInfoVO.getSkus();
         if (CollectionUtils.isEmpty(skus)){
             return;
@@ -172,7 +188,38 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
             this.smsClient.saveSale(saleVO);
 
         });
+    }
 
+    /**
+     * 保存spu基本属性信息
+     * @param spuInfoVO
+     * @param spuId
+     */
+    private void saveBaseAttrs(SpuInfoVO spuInfoVO, Long spuId) {
+        List<ProductAttrValueVO> baseAttrs = spuInfoVO.getBaseAttrs();
+
+        baseAttrs.forEach(baseAttr -> {
+            baseAttr.setSpuId(spuId);
+            baseAttr.setAttrSort(0);
+            baseAttr.setQuickShow(1);
+            this.productAttrValueDao.insert(baseAttr);
+        });
+    }
+
+
+    /**
+     * 保存spu基本信息
+     * @param spuInfoVO
+     * @return
+     */
+    @Transactional
+    public Long saveSpuInfo(SpuInfoVO spuInfoVO) {
+        spuInfoVO.setPublishStatus(1); // 默认是已上架
+        spuInfoVO.setCreateTime(new Date());
+        spuInfoVO.setUodateTime(spuInfoVO.getCreateTime());// 新增时，更新时间和创建时间一致
+        this.save(spuInfoVO);
+
+        return spuInfoVO.getId();
     }
 
 }
