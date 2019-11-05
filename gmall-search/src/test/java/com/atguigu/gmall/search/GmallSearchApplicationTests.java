@@ -47,7 +47,7 @@ class GmallSearchApplicationTests {
         do {
             //分页查询spu
             QueryCondition condition = new QueryCondition();
-            condition.setPage(pageNum);
+            condition.setPage(pageNum);   //构建分页条件
             condition.setLimit(pageSize);
             Resp<List<SpuInfoEntity>> listResp = this.gmallPmsClient.querySpuPage(condition);
             //获取当前页的spuInfo数据

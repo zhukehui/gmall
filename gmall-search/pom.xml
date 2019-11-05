@@ -47,6 +47,11 @@
             <version>6.3.1</version>
         </dependency>
         <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>6.8.1</version>
+        </dependency>
+        <dependency>
             <groupId>com.atguigu</groupId>
             <artifactId>gmall-pms-interface</artifactId>
             <version>0.0.1-SNAPSHOT</version>
