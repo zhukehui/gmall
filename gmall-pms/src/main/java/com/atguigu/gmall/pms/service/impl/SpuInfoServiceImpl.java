@@ -26,7 +26,6 @@ import org.springframework.util.CollectionUtils;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 
 @Service("spuInfoService")
@@ -141,7 +140,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
             BeanUtils.copyProperties(skuInfoVO,skuInfoEntity);
             // 品牌和分类的id需要从spuInfo中获取
             skuInfoEntity.setBrandId(spuInfoVO.getBrandId());
-            skuInfoEntity.setCatalogId(skuInfoVO.getCatalogId());
+            skuInfoEntity.setCatalogId(spuInfoVO.getCatalogId());
 
             // 获取随机的uuid作为sku的编码
             skuInfoEntity.setSkuCode(UUID.randomUUID().toString());

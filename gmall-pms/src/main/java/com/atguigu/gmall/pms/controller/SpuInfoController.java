@@ -1,7 +1,7 @@
 package com.atguigu.gmall.pms.controller;
 
 import java.util.Arrays;
-import java.util.Map;
+import java.util.List;
 
 
 import com.atguigu.core.bean.PageVo;
@@ -46,6 +46,18 @@ public class SpuInfoController {
         return Resp.ok(page);
     }
 
+
+    /**
+     * 列表
+     */
+    @ApiOperation("分页查询(排序)")
+    @PostMapping("/list")
+    @PreAuthorize("hasAuthority('pms:spuinfo:list')")
+    public Resp<List<SpuInfoEntity>> querySpuPage(@RequestBody QueryCondition queryCondition) {
+        PageVo page = spuInfoService.queryPage(queryCondition);
+
+        return Resp.ok((List<SpuInfoEntity>)page.getList());
+    }
 
     /**
      * 信息
