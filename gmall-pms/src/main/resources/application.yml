@@ -1,3 +1,6 @@
-
-
-
+spring:
+  rabbitmq:
+    host: 192.168.228.188
+    virtual-host: /huigege
+    username: huigege
+    password: huigege

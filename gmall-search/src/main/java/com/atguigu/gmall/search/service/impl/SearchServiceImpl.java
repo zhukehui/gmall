@@ -232,7 +232,7 @@ public class SearchServiceImpl implements SearchService {
         sourceBuilder.aggregation(AggregationBuilders.terms("categoryAgg").field("productCategoryId")
                 .subAggregation(AggregationBuilders.terms("categoryNameAgg").field("productCategoryName")));
 
-        //搜索属性                                    nested：嵌套聚合 名称         路径
+        //搜索属性                                    nested：嵌套聚合
         sourceBuilder.aggregation(AggregationBuilders.nested("attrAgg", "attrValueList")
                 .subAggregation(AggregationBuilders.terms("attrIdAgg").field("attrValueList.productAttributeId") //子聚合（包含俩子聚合）
                         .subAggregation(AggregationBuilders.terms("attrNameAgg").field("attrValueList.name"))  //子聚合
