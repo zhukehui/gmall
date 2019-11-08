@@ -15,4 +15,8 @@ public interface IndexService {
     List<CategoryVO> queryCategoryVO(Long pid);
 
     String testLock();
+
+    String testRead();
+
+    String testWrite();
 }

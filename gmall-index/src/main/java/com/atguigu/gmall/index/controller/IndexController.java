@@ -48,4 +48,15 @@ public class IndexController {
 
         return Resp.ok(msg);
     }
+    @GetMapping("read")
+    public Resp<Object> testRead(){
+        String msg = this.indexService.testRead();
+        return Resp.ok(msg);
+    }
+
+    @GetMapping("write")
+    public Resp<Object> testWrite(){
+        String msg = this.indexService.testWrite();
+        return Resp.ok(msg);
+    }
 }
