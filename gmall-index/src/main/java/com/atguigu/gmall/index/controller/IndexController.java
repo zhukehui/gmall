@@ -59,4 +59,16 @@ public class IndexController {
         String msg = this.indexService.testWrite();
         return Resp.ok(msg);
     }
+
+    @GetMapping("latch")
+    public Resp<Object> testLatch() throws InterruptedException {
+        String msg = this.indexService.testLatch();
+        return Resp.ok(msg);
+    }
+
+    @GetMapping("out")
+    public Resp<Object> testOut(){
+        String msg = this.indexService.testOut();
+        return Resp.ok(msg);
+    }
 }

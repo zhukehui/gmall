@@ -19,4 +19,8 @@ public interface IndexService {
     String testRead();
 
     String testWrite();
+
+    String testLatch() throws InterruptedException;
+
+    String testOut();
 }
