@@ -19,4 +19,6 @@ import java.util.List;
 public interface ProductAttrValueDao extends BaseMapper<ProductAttrValueEntity> {
 
     List<ProductAttrValueEntity> querySearchAttrValue(@Param("spuId") Long spuId);
+
+    List<ProductAttrValueEntity> queryByGidAndSpuId(@Param("spuId") Long spuId,@Param("groupId") Long groupId);
 }

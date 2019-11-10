@@ -25,4 +25,14 @@
         AND b.search_type = 1
     </select>
 
+    <select id="queryByGidAndSpuId" resultMap="productAttrValueMap">
+        SELECT
+            b.*
+        FROM
+            pms_attr_attrgroup_relation a
+        INNER JOIN pms_product_attr_value b ON a.attr_id = b.attr_id
+        WHERE
+            a.attr_group_id = #{groupId}
+        AND b.spu_id = #{spuId}
+    </select>
 </mapper>
