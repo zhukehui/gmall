@@ -139,7 +139,7 @@ public class ItemServiceImpl implements ItemService {
         return itemVO;
     }
 
-
+//示例：
     /*public static void main(String[] args) {
         *//*
         *
