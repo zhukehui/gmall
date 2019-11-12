@@ -5,13 +5,11 @@ spring:
     name: gateway-api
   cloud:
     gateway:
-      routes: #\u8DEF\u7531\uFF0C\u914D\u7F6E\u4E3A\u4E00\u4E2Alist\u96C6\u5408 List<RouteDefinition>\uFF0C\u6BCF\u4E2A\u5143\u7D20\u8981\u4EE5 - \u5F00\u5934
-        - id: pms-route #\u8DEF\u7531\u7684\u552F\u4E00\u6807\u5FD7\uFF0C\u901A\u5E38\u53D6\u670D\u52A1\u540D
-          uri: lb://pms-service #\u5FAE\u670D\u52A1\u7684\u8BBF\u95EE\u8DEF\u5F84\uFF0Clb\u652F\u6301\u8D1F\u8F7D\u5747\u8861
-          predicates: #\u65AD\u8A00(\u5224\u65AD\u8BF7\u6C42\u8DEF\u5F84\u8BE5\u8FDB\u5165\u54EA\u4E2A\u5FAE\u670D\u52A1\uFF0C\u8BE5\u4E0D\u8BE5\u8FDB\u5165\u8FD9\u4E2A\u5FAE\u670D\u52A1)
-            - Path=/pms/** #\u5224\u65AD\u8BF7\u6C42\u8DEF\u5F84\u662F\u5426\u7B26\u5408,/pms/\u7528\u6765\u533A\u5206\u5FAE\u670D\u52A1\u7684
-         #filters:   \u91CD\u5199\u8DEF\u5F84\uFF1A\u4EE5\u9017\u53F7\u548C\u7A7A\u683C\u5206\u5272
-          # - RewritePath=/pms/(?<segment>.*), /$\{segment} \u9017\u53F7\u524D\u91CD\u5199\u524D\uFF0C\u9017\u53F7\u540E\u91CD\u5199\u540E
+      routes:
+        - id: pms-route
+          uri: lb://pms-service
+          predicates:
+            - Path=/pms/**
         - id: sms-route
           uri: lb://sms-service
           predicates:
@@ -40,7 +38,25 @@ spring:
             - Path=/api/index/**
           filters:
             - RewritePath=/api(?<segment>/?.*), $\{segment}
+        - id: item-route
+          uri: lb://item-service
+          predicates:
+            - Path=/api/item/**
+          filters:
+            - RewritePath=/api(?<segment>/?.*), $\{segment}
+        - id: auth-route
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - RewritePath=/api(?<segment>/?.*), $\{segment}
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
+
+auth:
+  jwt:
+    publicKeyPath: E:\developWorkspace\workspace_idea\tmp\rsa.pub  #公钥路径
+    cookieName: GMALL_TOKEN # cookie的名称
+
 

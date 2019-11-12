@@ -1,0 +1,16 @@
+server:
+  port: 8089
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+auth:
+  jwt:
+    publicKeyPath: E:\developWorkspace\workspace_idea\tmp\rsa.pub  #公钥路径
+    privateKeyPath: E:\developWorkspace\workspace_idea\tmp\rsa.pri  #私钥路径
+    expire: 180  #过期时间，单位是分钟
+    cookieName: GMALL_TOKEN
+    secret: zkh199831@$%! #盐
