@@ -30,11 +30,11 @@ public class AuthController {
     @PostMapping("/accredit")
     public Resp<Object> accredit(@RequestParam("username")String username, @RequestParam("password")String password,
                                  HttpServletRequest request, HttpServletResponse response){
-
+        // 登录校验，查看是否携带token
         String jwtToken = this.authService.accredit(username, password);
 
         if (StringUtils.isEmpty(jwtToken)){
-            return Resp.fail("获取jwtToken失败");
+            return Resp.fail("登录失败，用户名或密码错误");
         }
 
         //4、把生成的jwt放入cookie中
@@ -43,7 +43,7 @@ public class AuthController {
                 this.jwtProperties.getExpire() * 60);
 
 
-        return Resp.ok(null);
+        return Resp.ok("登录成功");
 
     }
 

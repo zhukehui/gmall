@@ -17,6 +17,9 @@ import java.util.List;
  */
 public interface GmallPmsApi {
 
+    @GetMapping("pms/skusaleattrvalue/sku/{skuId}")
+    public Resp<List<SkuSaleAttrValueEntity>> querySaleAttrBySkuId(@PathVariable("skuId")Long skuId);
+
     @GetMapping("pms/spuinfodesc/info/{spuId}")
     public Resp<SpuInfoDescEntity> querySpuDescById(@PathVariable("spuId") Long spuId);
 
