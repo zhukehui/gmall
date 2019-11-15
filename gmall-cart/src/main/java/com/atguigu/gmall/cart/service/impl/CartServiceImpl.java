@@ -7,6 +7,7 @@ import com.atguigu.gmall.cart.feign.GmallSmsClient;
 import com.atguigu.gmall.cart.interceptor.LoginInterceptor;
 import com.atguigu.gmall.cart.service.CartService;
 import com.atguigu.gmall.cart.vo.Cart;
+import com.atguigu.gmall.cart.vo.CartItemVO;
 import com.atguigu.gmall.cart.vo.UserInfo;
 import com.atguigu.gmall.pms.entity.SkuInfoEntity;
 import com.atguigu.gmall.pms.entity.SkuSaleAttrValueEntity;
@@ -17,6 +18,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +30,8 @@ import java.util.stream.Collectors;
 public class CartServiceImpl implements CartService {
 
     public static final String KEY_PREFIX = "cart:key:";
+
+    public static final String CURRENT_PRICE_PREFIX = "cart:price:";
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -75,11 +79,16 @@ public class CartServiceImpl implements CartService {
             cart.setDefaultImage(skuInfoEntity.getSkuDefaultImg());//设置图片
             Resp<List<ItemSaleVO>> listResp1 = this.gmallSmsClient.queryItemSaleVOs(cart.getSkuId());
             cart.setSales(listResp1.getData());//设置营销信息
+            this.stringRedisTemplate.opsForValue().set(CURRENT_PRICE_PREFIX+ skuId ,skuInfoEntity.getPrice().toString());
         }
         //同步到Redis中
         hashOps.put(skuId,JSON.toJSONString(cart));
     }
 
+    /**
+     * 查询
+     * @return
+     */
     @Override
     public List<Cart> queryCarts() {
 
@@ -92,7 +101,11 @@ public class CartServiceImpl implements CartService {
         List<Object> cartJsonList = userKeyOps.values();
         List<Cart> userKeyCarts = null;
         if (!CollectionUtils.isEmpty(cartJsonList)){
-           userKeyCarts = cartJsonList.stream().map(cartJson -> JSON.parseObject(cartJson.toString(), Cart.class)).collect(Collectors.toList());
+           userKeyCarts = cartJsonList.stream().map(cartJson -> {
+               Cart cart = JSON.parseObject(cartJson.toString(), Cart.class);
+               cart.setCurrentPrice(new BigDecimal(this.stringRedisTemplate.opsForValue().get(CURRENT_PRICE_PREFIX+cart.getSkuId())));
+               return cart;
+           }).collect(Collectors.toList());
         }
 
         //判断登录状态
@@ -128,10 +141,22 @@ public class CartServiceImpl implements CartService {
         }
         //查询返回
         List<Object> userIdCartJsonList = userIdOps.values();
-        return userIdCartJsonList.stream().map(userIdCartJson -> JSON.parseObject(userIdCartJson.toString(),Cart.class)).collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(userIdCartJsonList)){
+            return null;
+        }
+        return userIdCartJsonList.stream().map(userIdCartJson -> {
+            Cart cart = JSON.parseObject(userIdCartJson.toString(), Cart.class);
+            cart.setCurrentPrice(new BigDecimal(this.stringRedisTemplate.opsForValue().get(CURRENT_PRICE_PREFIX+cart.getSkuId())));
+            return cart;
+
+        }).collect(Collectors.toList());
 
     }
 
+    /**
+     * 更新
+     * @param cart
+     */
     @Override
     public void updateCart(Cart cart) {
         // 获取redis的key
@@ -151,6 +176,10 @@ public class CartServiceImpl implements CartService {
         }
     }
 
+    /**
+     * 删除
+     * @param skuId
+     */
     @Override
     public void deleteCart(Long skuId) {
 
@@ -165,6 +194,10 @@ public class CartServiceImpl implements CartService {
 
     }
 
+    /**
+     * 修改选中状态
+     * @param carts
+     */
     @Override
     public void checkCart(List<Cart> carts) {
         // 获取redis的key
@@ -183,6 +216,33 @@ public class CartServiceImpl implements CartService {
                 hashOps.put(cart.getSkuId().toString(), JSON.toJSONString(cart));
             }
         });
+
+    }
+
+    @Override
+    public List<CartItemVO> queryCartItemVO(Long userId) {
+        //登录，查询登录状态的购物车
+        String key = KEY_PREFIX + userId;// 用户已登录，查询登录状态的购物车
+        BoundHashOperations<String, Object, Object> userIdOps = this.stringRedisTemplate.boundHashOps(key);// 获取登录状态的购物车
+
+
+        //查询返回
+        List<Object> userIdCartJsonList = userIdOps.values();
+        if (CollectionUtils.isEmpty(userIdCartJsonList)){
+            return null;
+        }
+        //获取所有的购物车记录
+        return userIdCartJsonList.stream().map(userIdCartJson -> {
+            Cart cart = JSON.parseObject(userIdCartJson.toString(), Cart.class);
+            cart.setCurrentPrice(new BigDecimal(this.stringRedisTemplate.opsForValue().get(CURRENT_PRICE_PREFIX + cart.getSkuId())));
+            return cart;
+
+        }).filter(cart -> cart.getCheck()).map(cart -> {
+            CartItemVO cartItemVO = new CartItemVO();
+            cartItemVO.setSkuId(cart.getSkuId());
+            cartItemVO.setCount(cart.getCount());
+            return cartItemVO;
+        }).collect(Collectors.toList());
 
     }
 
