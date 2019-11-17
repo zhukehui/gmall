@@ -29,9 +29,9 @@ import java.util.stream.Collectors;
 @Service
 public class CartServiceImpl implements CartService {
 
-    public static final String KEY_PREFIX = "cart:key:";
+    private static final String KEY_PREFIX = "cart:key:";
 
-    public static final String CURRENT_PRICE_PREFIX = "cart:price:";
+    private static final String CURRENT_PRICE_PREFIX = "cart:price:";
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;

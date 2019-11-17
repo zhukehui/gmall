@@ -12,6 +12,7 @@ import com.atguigu.gmall.wms.vo.SkuLockVO;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -39,11 +40,12 @@ public class WareSkuController {
     @PostMapping("/check/lock")
     public Resp<Object> checkAndLock(@RequestBody List<SkuLockVO> skuLockVOS) {
 
-
-
         String msg = this.wareSkuService.checkAndLock(skuLockVOS);
+        if(StringUtils.isNotBlank(msg)){
+            return Resp.fail(msg);
+        }
 
-        return Resp.ok(msg);
+        return Resp.ok(null);
 
     }
 
