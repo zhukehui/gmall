@@ -148,7 +148,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void submit(OrderSubmitVO orderSubmitVO) {
+    public OrderEntity submit(OrderSubmitVO orderSubmitVO) {
 
         //         * 提交订单分以下几个基本步骤：
         //         * 1. 验证令牌防止重复提交
@@ -191,6 +191,7 @@ public class OrderServiceImpl implements OrderService {
 
         //         * 4. 生成订单
         UserInfo userInfo = LoginInterceptor.get();
+        Resp<OrderEntity> orderResp = null;
         try {
             orderSubmitVO.setUserId(userInfo.getUserId());
 
@@ -199,10 +200,11 @@ public class OrderServiceImpl implements OrderService {
 
             orderSubmitVO.setUserName(memberEntity.getUsername());
 
-            Resp<OrderEntity> orderResp = this.gmallOmsClient.createOrder(orderSubmitVO);
+            orderResp = this.gmallOmsClient.createOrder(orderSubmitVO);
         } catch (Exception e) {
 
             e.printStackTrace();
+//            this.amqpTemplate.convertAndSend("WMS-EXCHANGE","wms.ttl",orderToken);//发生异常，解锁库存
             throw new RuntimeException("订单创建失败！");
         }
 
@@ -214,5 +216,13 @@ public class OrderServiceImpl implements OrderService {
         map.put("skuIds",skuIds);
         this.amqpTemplate.convertAndSend("GMALL-ORDER-EXCHANGE","cart.delete",map);
 
+        if (orderResp != null){
+          return orderResp.getData();
+        }
+        return null;
+    }
+
+    public void paySuccess(String out_trade_no){
+        this.amqpTemplate.convertAndSend("GMALL-ORDER-EXCHANGE","order.pay",out_trade_no);
     }
 }

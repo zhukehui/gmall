@@ -49,5 +49,20 @@
         <result property="modifyTime" column="modify_time"/>
     </resultMap>
 
+    <update id="closeOrder" >
+        UPDATE oms_order
+        SET STATUS = 4
+        WHERE
+            order_sn = #{orderToken}
+        AND
+            status = 0
+    </update>
 
+    <update id="paySuccess">
+        UPDATE oms_order
+        SET STATUS = 1
+        WHERE
+            order_sn = #{orderToken}
+        AND `status` = 0
+    </update>
 </mapper>

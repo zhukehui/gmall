@@ -1,10 +1,9 @@
-package com.atguigu.gmall.wms.config;
+package com.atguigu.gmall.oms.config;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
-import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,7 +24,7 @@ public class RabbitMQConfig {
     @Bean
     public Exchange exchange(){//交换机
 
-        return  new TopicExchange("WMS-EXCHANGE",true,false,null);
+        return  new TopicExchange("OMS-EXCHANGE",true,false,null);
 
     }
 
@@ -37,10 +36,10 @@ public class RabbitMQConfig {
     public Queue queue(){//队列
 
         Map<String, Object> arguments = new HashMap<>();
-        arguments.put("x-dead-letter-exchange","WMS-EXCHANGE");
-        arguments.put("x-dead-letter-routing-key", "wms.ttl");
-        arguments.put("x-message-ttl",10000);//单位是毫秒（用于测试，实际根据需求，通常30分钟或者15分钟
-        return new Queue("WMS-TTL-QUEUE",true,false,false,arguments);
+        arguments.put("x-dead-letter-exchange","OMS-EXCHANGE");
+        arguments.put("x-dead-letter-routing-key", "oms.dead");
+        arguments.put("x-message-ttl",6000);//单位是毫秒（用于测试，实际根据需求，通常30分钟或者15分钟
+        return new Queue("OMS-TTL-QUEUE",true,false,false,arguments);
 
     }
 
@@ -52,8 +51,8 @@ public class RabbitMQConfig {
     @Bean
     public Binding binding(){
 
-        return new Binding("WMS-TTL-QUEUE", Binding.DestinationType.QUEUE,
-                "WMS-EXCHANGE","wms.unlock",null);
+        return new Binding("OMS-TTL-QUEUE", Binding.DestinationType.QUEUE,
+                "OMS-EXCHANGE","oms.close",null);
     }
 
     /**
@@ -63,7 +62,7 @@ public class RabbitMQConfig {
     @Bean
     public Queue deadQueue(){
 
-        return new Queue("WMS-DEAD-QUEUE",true,false,false,null);
+        return new Queue("OMS-DEAD-QUEUE",true,false,false,null);
     }
 
     /**
@@ -73,7 +72,7 @@ public class RabbitMQConfig {
      */
     @Bean
     public Binding deadBinding(){
-        return new Binding("WMS-DEAD-QUEUE", Binding.DestinationType.QUEUE,
-                "WMS-EXCHANGE","wms.ttl",null);
+        return new Binding("OMS-DEAD-QUEUE", Binding.DestinationType.QUEUE,
+                "OMS-EXCHANGE","oms.dead",null);
     }
 }
