@@ -65,10 +65,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gmall-order/src/main/java/com/atguigu/gmall/order/controller/OrderController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="326">
-              <caret line="98" column="23" selection-start-line="98" selection-start-column="23" selection-end-line="98" selection-end-column="23" />
+            <state relative-caret-position="432">
+              <caret line="141" column="7" lean-forward="true" selection-start-line="141" selection-start-column="7" selection-end-line="141" selection-end-column="7" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#4398#6045#0" />
               </folding>
             </state>
           </provider>
@@ -611,7 +612,7 @@
       <workItem from="1574071195327" duration="647000" />
       <workItem from="1574072643378" duration="16973000" />
       <workItem from="1574123426907" duration="1883000" />
-      <workItem from="1574299829225" duration="2908000" />
+      <workItem from="1574299829225" duration="3161000" />
     </task>
     <task id="LOCAL-00001" summary="谷粒商城分类分组及组下规格参数查询完成">
       <created>1572457578560</created>
@@ -656,7 +657,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="347932000" />
+    <option name="totallyTimeSpent" value="348185000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -669,7 +670,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="942" y="0" width="997" height="1073" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.31419286" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.2485482" />
@@ -679,7 +679,7 @@
       <window_info id="UI Designer" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info id="Web" order="7" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="0" sideWeight="0.496208" weight="0.2128655" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="0" sideWeight="0.496208" visible="true" weight="0.2128655" />
       <window_info anchor="bottom" id="Run Dashboard" order="1" sideWeight="0.49730146" weight="0.38105726" />
       <window_info anchor="bottom" id="Spring" order="2" weight="0.32841328" />
       <window_info anchor="bottom" id="Docker" order="3" show_stripe_button="false" />
@@ -1093,10 +1093,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/gmall-order/src/main/java/com/atguigu/gmall/order/controller/OrderController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="326">
-          <caret line="98" column="23" selection-start-line="98" selection-start-column="23" selection-end-line="98" selection-end-column="23" />
+        <state relative-caret-position="432">
+          <caret line="141" column="7" lean-forward="true" selection-start-line="141" selection-start-column="7" selection-end-line="141" selection-end-column="7" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#4398#6045#0" />
           </folding>
         </state>
       </provider>

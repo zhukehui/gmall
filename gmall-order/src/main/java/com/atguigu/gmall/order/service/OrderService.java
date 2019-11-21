@@ -14,4 +14,6 @@ public interface OrderService {
     OrderEntity submit(OrderSubmitVO orderSubmitVO);
 
     void paySuccess(String out_trade_no);
+
+    OrderEntity queryOrder();
 }

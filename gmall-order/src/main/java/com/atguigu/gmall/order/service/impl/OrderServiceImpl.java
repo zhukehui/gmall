@@ -225,4 +225,9 @@ public class OrderServiceImpl implements OrderService {
     public void paySuccess(String out_trade_no){
         this.amqpTemplate.convertAndSend("GMALL-ORDER-EXCHANGE","order.pay",out_trade_no);
     }
+
+    @Override
+    public OrderEntity queryOrder() {
+        return null;
+    }
 }

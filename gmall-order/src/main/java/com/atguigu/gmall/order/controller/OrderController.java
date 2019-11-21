@@ -129,7 +129,7 @@ public class OrderController {
         RCountDownLatch countDownLatch = this.redissonClient.getCountDownLatch("seckill:count:" + userInfo.getUserId());
         countDownLatch.await();
 
-        OrderEntity orderEntity = this.orderService.queryOrder();
+        OrderEntity orderEntity = this.orderService.queryOrder();//未实现
 
         return Resp.ok(orderEntity);
 
